@@ -30,7 +30,8 @@ x,yに接続される線(9本ずつ)を逐次切り替え、DATAのアナログ�
 
 
 void setup() {
-  
+  Serial.println(115200);
+  Serial.println("begin Serial!");
 
 }
 

@@ -38,7 +38,18 @@ MCP23S17 MCP_2(CS2,SPIMISO,SPIMOSI,SPICLOCK);//MCP2
 
 void setup() {
   Serial.begin(115200);
-
+  Serial.println();
+  Serial.print("MCP23S17_LIB_ VERSION:");
+  Serial.println(MCP23S17_LIB_ VERSION);
+  delay(100);
+  SPI.begin();
+  bool b = MCP_1.begin();
+  Serial.println(b?"true":"false");
+  delay(100);
+  MCP_1.pinMode8(0,0x00);
+  MCP_1.pinMode8(1,0x00);
+  
+  
 }
 
 void loop() {

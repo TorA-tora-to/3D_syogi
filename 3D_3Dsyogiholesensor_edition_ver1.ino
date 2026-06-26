@@ -44,15 +44,74 @@ void setup() {
   delay(100);
   SPI.begin();
   bool b = MCP_1.begin();
+  Serial.print("MCP23S17_1 begin:")
+  Serial.println(b?"true":"false");
+  delay(100);
+  bool b = MCP_2.begin();
+  Serial.print("MCP23S17_2 begin:")
   Serial.println(b?"true":"false");
   delay(100);
   MCP_1.pinMode8(0,0x00);
   MCP_1.pinMode8(1,0x00);
+
+  MCP_2.pinMode8(0,0x00);
+  MCP_2.pinMode8(1,0x00);
   
+  Serial.println("TEST write1(0)");
+  delay(100);
+  for (int i = 0; i < 16; i++)
+  {
+    MCP_1.write1(0, i % 2);  //  alternating HIGH/LOW
+    Serial.print(i % 2);
+    Serial.print(' ');
+    delay(100);
+  }
+  MCP_1.write1(0,0);
+  for (int i = 0; i < 16; i++)
+  {
+    MCP_2.write1(0, i % 2);  //  alternating HIGH/LOW
+    Serial.print(i % 2);
+    Serial.print(' ');
+    delay(100);
+  }
+  MCP_2.write1(0,0);//両方の出力をGNDに落とす。
+  
+  Serial.println();
+  Serial.println();
+
+  Serial.println("TEST write1(pin)");
+  delay(100);
+  for (int pin = 0; pin < 16; pin++)
+  {
+    MCP_1.write1(pin, 1 - pin % 2);  //  alternating HIGH/LOW
+    Serial.print(1 - pin % 2);
+    Serial.print(' ');
+    delay(100);
+  }
+  Serial.println();
+  Serial.println();
+
+  Serial.println("TEST read back");
+
+  for (int pin = 0; pin < 16; pin++)
+  {
+    int val = MCP_1.read1(pin);
+    Serial.print(val);
+    Serial.print(' ');
+    delay(100);
+  }
+  Serial.println();
+  for (int pin = 0; pin < 16; pin++)
+  {
+    val = MCP_2.read1(pin);
+    Serial.print(val);
+    Serial.print(' ');
+    delay(100);
+  }
+  Serial.println();
   
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
 
 }

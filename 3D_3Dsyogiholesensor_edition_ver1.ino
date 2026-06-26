@@ -6,7 +6,8 @@ x,yに接続される線(9本ずつ)を逐次切り替え、DATAのアナログ�
 */
 
 #include <MCP23S17.h>
-
+#include<MCP320x.h>
+#include<SPI.h>
 
 #define SPICLOCK 37;//SCK
 #define SPIMOSI 36;//MOSI
@@ -18,7 +19,7 @@ x,yに接続される線(9本ずつ)を逐次切り替え、DATAのアナログ�
 #define DATA 16;//mainboards' DATA(board1~8) MCP3208
 #define DATA9 41;//mainords' board9 DATA pin
 #define frd 17;//mainboards' Position(borad1~8) MCP3208
-#define frd9 40;//mainboards' board9 pssition pin
+#define frd9 40;//mainboards' board9 position pin
 #define SW1 12;//push sw1
 #define SW2 13;//push sw2
 #define LED 14;//LED
@@ -29,11 +30,13 @@ x,yに接続される線(9本ずつ)を逐次切り替え、DATAのアナログ�
 #define sSEGb 8;//7segment LED e:1
 #define sSEGa 9;//7segment LED f:9
 #define sSEGa 10;//7segment LED g:10
-
+#define Vref 5000;
+#define ADC_CLK 1600000;
 
 MCP23S17 MCP_1(CS1,SPIMISO,SPIMOSI,SPICLOCK);//MCP1:mainboardGND rightkomadaiVcc,GND 
 MCP23S17 MCP_2(CS2,SPIMISO,SPIMOSI,SPICLOCK);//MCP2:mainboardVcc leftkomadaiVcc,GND
-
+MCP3208 adc_DATA(Vref,DATA);//MCP3208:board(1~8)DATA
+MCP3208 adc_position(Vref,frd);//MCP3208:board(1~8)position;
 
 void setup() {
   Serial.begin(115200);
@@ -55,6 +58,11 @@ void setup() {
 
   MCP_2.pinMode8(0,0x00);
   MCP_2.pinMode8(1,0x00);
+
+  pinMode(DATA,OUTPUT);
+  digitalWrite(DATA,HIGH);
+  pinMode(frd,OUTPUT);
+  digitalWrite(frd,HIGH);
   
   Serial.println("TEST write1(0)");
   delay(100);
@@ -109,6 +117,9 @@ void setup() {
   }
   Serial.println();
   
+  SPISettings settings(ADC_CLK, MSBFIRST, SPI_MODE0);
+  
+  SPI.beginTransaction(settings);
 }
 
 void loop() {

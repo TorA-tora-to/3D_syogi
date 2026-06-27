@@ -40,6 +40,27 @@ MCP23S17 MCP_2(CS2,SPIMISO,SPIMOSI,SPICLOCK);//MCP2:mainboardVcc leftkomadaiVcc,
 MCP3208 adc_DATA(Vref,DATA);//MCP3208:board(1~8)DATA
 MCP3208 adc_position(Vref,frd);//MCP3208:board(1~8)position;
 
+int gyoku=1000;
+int hisya=900;
+int kaku=800;
+int kin=700;
+int gin=600;
+int kei=500;
+int kyou=400;
+int fu=300;
+int bluck=800;
+int white=500;
+
+int banmen1[9][9]={0};
+int banmen2[9][9]={0};
+int banmen3[9][9]={0};
+int banmen4[9][9]={0};
+int banmen5[9][9]={0};
+int banmen6[9][9]={0};
+int banmen7[9][9]={0};
+int banmen8[9][9]={0};
+int banmen9[9][9]={0};
+
 void setup() {
   Serial.begin(115200);
   Serial.println();
@@ -123,6 +144,7 @@ void setup() {
   
   SPI.beginTransaction(settings);
 }
+
 
 void loop() {
 

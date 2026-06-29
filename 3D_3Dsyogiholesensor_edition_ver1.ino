@@ -51,6 +51,8 @@ int fu=300;
 int bluck=800;
 int white=500;
 
+int floor;//階層指定
+
 int banmen1[9][9]={0};
 int banmen2[9][9]={0};
 int banmen3[9][9]={0};
@@ -143,6 +145,11 @@ void setup() {
   SPISettings settings(ADC_CLK, MSBFIRST, SPI_MODE0);
   
   SPI.beginTransaction(settings);
+}
+
+void hantei(floor,xon,yon,mdata,mfrd)//階層、位置を入力し、磁石センサ光センサを読み取る。
+{
+    
 }
 
 

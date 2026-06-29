@@ -194,6 +194,7 @@ int hantei(floor,mdata,mfrd)//階層、位置を入力し、磁石センサ光�
       koma=8;
     }
   
+    return koma;
 }
 
 

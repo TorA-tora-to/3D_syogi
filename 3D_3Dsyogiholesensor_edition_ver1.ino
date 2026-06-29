@@ -39,7 +39,7 @@ MCP23S17 MCP_1(CS1,SPIMISO,SPIMOSI,SPICLOCK);//MCP1:mainboardGND rightkomadaiVcc
 MCP23S17 MCP_2(CS2,SPIMISO,SPIMOSI,SPICLOCK);//MCP2:mainboardVcc leftkomadaiVcc,GND
 MCP3208 adc_DATA(Vref,DATA);//MCP3208:board(1~8)DATA
 MCP3208 adc_position(Vref,frd);//MCP3208:board(1~8)position;
-
+//各コマの読み取り最大値
 int gyoku=1000;
 int hisya=900;
 int kaku=800;
@@ -48,6 +48,7 @@ int gin=600;
 int kei=500;
 int kyou=400;
 int fu=300;
+int shiki=200;//駒なしと歩の判断閾値
 int bluck=800;
 int white=500;
 
@@ -147,9 +148,52 @@ void setup() {
   SPI.beginTransaction(settings);
 }
 
-void hantei(floor,xon,yon,mdata,mfrd)//階層、位置を入力し、磁石センサ光センサを読み取る。
+int hantei(floor,mdata,mfrd)//階層、位置を入力し、磁石センサ光センサを読み取る。
 {
-    
+    int koma=0;
+    if(floor==9)
+    {
+      mdata=analogRead(DATA9);
+      mfrd=analogRead(frd9);
+    }
+    else
+    {
+      mdata=analogRead(DATA);
+      mfrd=analogRead(frd);
+    }
+    if(DATA<fu&&DATA>shiki)
+    {
+      koma=1;
+    }
+    else if(DATA<kyou)
+    {
+      koma=2;
+    }
+    else if(DATA<kei)
+    {
+      koma=3;
+    }
+    else if(DATA<gin)
+    {
+      koma=4;
+    }
+    else if(DATA<kin)
+    {
+      koma=5;
+    }
+    else if(DATA<kaku)
+    {
+      koma=6;
+    }
+    else if(DATA<hisya)
+    {
+      koma=7;
+    }
+    else if(DATA<gyoku)
+    {
+      koma=8;
+    }
+  
 }
 
 

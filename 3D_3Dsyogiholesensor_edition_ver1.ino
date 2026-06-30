@@ -40,15 +40,24 @@ MCP23S17 MCP_2(CS2,SPIMISO,SPIMOSI,SPICLOCK);//MCP2:mainboardVcc leftkomadaiVcc,
 MCP3208 adc_DATA(Vref,DATA);//MCP3208:board(1~8)DATA
 MCP3208 adc_position(Vref,frd);//MCP3208:board(1~8)position;
 //各コマの読み取り最大値
-int gyoku=1000;
-int hisya=900;
-int kaku=800;
-int kin=700;
-int gin=600;
-int kei=500;
-int kyou=400;
-int fu=300;
-int shiki=200;//駒なしと歩の判断閾値
+int gyoku=1023;
+int hisya=970;
+int kaku=920;
+int kin=870;
+int gin=820;
+int kei=770;
+int kyou=720;
+int fu=670;
+int shiki=600;//駒なしと歩の判断閾値
+int fu2=420;
+int kyou2=370;
+int kei2=320;
+int gin2=270;
+int kin2=220;
+int kaku2=170;
+int gisya2=120;
+int gyoku2=70;
+
 int bluck=800;
 int white=500;
 

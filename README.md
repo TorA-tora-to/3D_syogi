@@ -8,3 +8,9 @@ z方向は出力線をアナログ値で読む。
 赤外線LEDx729:https://akizukidenshi.com/catalog/g/g100656/
 
 フォトトランジスタx729:https://akizukidenshi.com/catalog/g/g100656/
+
+降圧バッファx1:https://www.marutsu.co.jp/pc/i/14242773/
+
+昇圧バッファx2:https://www.marutsu.co.jp/pc/i/14226373/
+
+マイコンボード:https://akizukidenshi.com/catalog/g/g131148/

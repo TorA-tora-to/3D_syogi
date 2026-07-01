@@ -243,7 +243,14 @@ int hantei(floor,mdata,mfrd)//階層、位置を入力し、磁石センサ光�
   
     if(mfrd>white)
     {
-      koma+=100;
+      if(koma<0)
+      {
+        koma-=100;
+      }
+      else if(koma>0)
+      {
+        koma+=100;
+      }
     }
     return koma;  
 }

@@ -58,7 +58,6 @@ int kaku2=170;
 int gisya2=120;
 int gyoku2=70;
 
-int bluck=800;
 int white=500;
 
 int floor;//階層指定
@@ -170,27 +169,65 @@ int hantei(floor,mdata,mfrd)//階層、位置を入力し、磁石センサ光�
       mdata=analogRead(DATA);
       mfrd=analogRead(frd);
     }
-    if(DATA<fu&&DATA>shiki)
+
+  
+    if(mdata<gyoku)
+    {
+      koma=-8;  
+    }
+    else if(mdata<hisya)
+    {
+      koma=-7;  
+    }
+    else if(mdata<kaku2)
+    {
+      koma=-6;  
+    }
+    else if(mdata<kin2)
+    {
+      koma=-5;  
+    }
+    else if(mdata<gin2)
+    {
+      koma=-4;  
+    }
+    else if(mdata<kei2)
+    {
+      koma=-3;  
+    }
+    else if(mdata<kyou2)
+    {
+      koma=-2;  
+    }
+    else if(mdata<fu2)
+    {
+      koma=-1;  
+    }
+    else if(mdata<shiki)
+    {
+      koma=0;  
+    }
+    else if(mdata<fu)
     {
       koma=1;
     }
-    else if(DATA<kyou)
+    else if(mdata<kyou)
     {
       koma=2;
     }
-    else if(DATA<kei)
+    else if(mdata<kei)
     {
       koma=3;
     }
-    else if(DATA<gin)
+    else if(mdata<gin)
     {
       koma=4;
     }
-    else if(DATA<kin)
+    else if(mdata<kin)
     {
       koma=5;
     }
-    else if(DATA<kaku)
+    else if(mdata<kaku)
     {
       koma=6;
     }
@@ -202,8 +239,13 @@ int hantei(floor,mdata,mfrd)//階層、位置を入力し、磁石センサ光�
     {
       koma=8;
     }
+
   
-    return koma;
+    if(mfrd>white)
+    {
+      koma+=100;
+    }
+    return koma;  
 }
 
 

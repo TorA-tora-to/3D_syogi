@@ -58,9 +58,14 @@ int kaku2=170;
 int gisya2=120;
 int gyoku2=70;
 
+int x,y;
+
+
 int white=500;
 
 int floor;//階層指定
+int time;
+int t,t0;
 
 int banmen1[9][9]={0};
 int banmen2[9][9]={0};
@@ -97,6 +102,9 @@ void setup() {
   digitalWrite(DATA,HIGH);
   pinMode(frd,OUTPUT);
   digitalWrite(frd,HIGH);
+  pinMode(14,OUTPUT);
+  pinMode(12,INPUT);
+  pinMode(13,INPUT);
   
   Serial.println("TEST write1(0)");
   delay(100);
@@ -156,7 +164,7 @@ void setup() {
   SPI.beginTransaction(settings);
 }
 
-int hantei(floor,mdata,mfrd)//階層、位置を入力し、磁石センサ光センサを読み取る。
+int hantei(floor)//階層、位置を入力し、磁石センサ光センサを読み取る。
 {
     int koma=0;
     if(floor==9)
@@ -257,5 +265,23 @@ int hantei(floor,mdata,mfrd)//階層、位置を入力し、磁石センサ光�
 
 
 void loop() {
-
+  if(digitalRead(12,HIGH)||digitalRead(13,HIGH)||time<10000)
+  {
+    time=miillis();
+  }
+  while(millis()-time<500);
+  {
+    digitalWrite(14,HIGH);
+  }
+  x=t/9;
+  y=t%9;
+  
+  banmen1[x][y]=hantei(1);
+  
+  
+  t++;
+  if(t==80)
+  {
+    t=0;
+  }
 }

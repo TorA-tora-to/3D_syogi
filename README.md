@@ -14,3 +14,5 @@ z方向は出力線をアナログ値で読む。
 昇圧バッファx2:https://www.marutsu.co.jp/pc/i/14226373/
 
 マイコンボード:https://akizukidenshi.com/catalog/g/g131148/
+
+基板間固定金具:https://www.hirosugi-net.co.jp/shop/c/c1011/

@@ -37,8 +37,8 @@ x,yに接続される線(9本ずつ)を逐次切り替え、DATAのアナログ�
 
 MCP23S17 MCP_1(CS1,SPIMISO,SPIMOSI,SPICLOCK);//MCP1:mainboardGND rightkomadaiVcc,GND 
 MCP23S17 MCP_2(CS2,SPIMISO,SPIMOSI,SPICLOCK);//MCP2:mainboardVcc leftkomadaiVcc,GND
-MCP3208 adc_DATA(Vref,DATA);//MCP3208:board(1~8)DATA
-MCP3208 adc_position(Vref,frd);//MCP3208:board(1~8)position;
+MCP3208 adc_DATA(Vref);//MCP3208:board(1~8)DATA
+MCP3208 adc_position(Vref);//MCP3208:board(1~8)position;
 //各コマの読み取り最大値
 int gyoku=1023;
 int hisya=970;
@@ -174,8 +174,8 @@ int hantei(floor)//階層、位置を入力し、磁石センサ光センサを�
     }
     else
     {
-      mdata=analogRead(DATA);
-      mfrd=analogRead(frd);
+      mdata=adc_DATA.analogRead(floor-1);
+      mfrd=adc_position.analogRead(floor-1);
     }
 
   

@@ -65,7 +65,7 @@ int white=500;
 
 int floor;//階層指定
 int time;
-int t,t0;
+int t=0,t0;
 
 int banmen1[9][9]={0};
 int banmen2[9][9]={0};
@@ -76,6 +76,7 @@ int banmen6[9][9]={0};
 int banmen7[9][9]={0};
 int banmen8[9][9]={0};
 int banmen9[9][9]={0};
+int banmen[9][9][9]={0};
 
 void setup() {
   Serial.begin(115200);
@@ -265,19 +266,26 @@ int hantei(floor)//階層、位置を入力し、磁石センサ光センサを�
 
 
 void loop() {
-  if(digitalRead(12,HIGH)||digitalRead(13,HIGH)||time<10000)
+  if(t==0)
   {
-    time=miillis();
-  }
-  while(millis()-time<500);
-  {
-    digitalWrite(14,HIGH);
+        digitalWrite(14,HIGH);
+        delay(500);
+        difgitalWrite(14,LOW);
   }
   x=t/9;
-  y=t%9;
+  y=t%9;//特定の行列をVcc,GNDとし、それ以外をGND,Vccとする。
   
-  banmen1[x][y]=hantei(1);
+  banmen[0][x][y]=hantei(1);  
+  banmen[1][x][y]=hantei(2);
+  banmen[2][x][y]=hantei(3);
+  banmen[3][x][y]=hantei(4);
+  banmen[4][x][y]=hantei(5);
+  banmen[5][x][y]=hantei(6);
+  banmen[6][x][y]=hantei(7);
+  banmen[7][x][y]=hantei(8);
+  banmen[8][x][y]=hantei(9);
   
+  Serial.println("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d",x,y,banmen[0][x][y],banmen[1][x][y],banmen[2][x][y],banmen[3][x][y],banmen[4][x][y],banmen[5][x][y],banmen[6][x][y],banmen[7][x][y],banmen[8][x][y]);
   
   t++;
   if(t==80)

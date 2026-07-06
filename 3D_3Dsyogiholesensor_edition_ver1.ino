@@ -65,7 +65,7 @@ int white=500;
 
 int floor;//階層指定
 int time;
-int t=0,t0;
+int t=0,t0,n;
 
 int banmen1[9][9]={0};
 int banmen2[9][9]={0};
@@ -274,7 +274,12 @@ void loop() {
   }
   x=t/9;
   y=t%9;//特定の行列をVcc,GNDとし、それ以外をGND,Vccとする。
-  
+
+  for(n=0;n<9;n++)
+  {
+    banmen[n][x][y]=hantei(n);
+  }
+  /*
   banmen[0][x][y]=hantei(1);  
   banmen[1][x][y]=hantei(2);
   banmen[2][x][y]=hantei(3);
@@ -284,7 +289,7 @@ void loop() {
   banmen[6][x][y]=hantei(7);
   banmen[7][x][y]=hantei(8);
   banmen[8][x][y]=hantei(9);
-  
+  */
   Serial.println("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d",x,y,banmen[0][x][y],banmen[1][x][y],banmen[2][x][y],banmen[3][x][y],banmen[4][x][y],banmen[5][x][y],banmen[6][x][y],banmen[7][x][y],banmen[8][x][y]);
   
   t++;

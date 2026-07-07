@@ -1,5 +1,5 @@
 /*
-3D将棋first program 対応基盤ver2.1 hole_sensor eition
+3D将棋first program 対応基盤ver2.2.1 hole_sensor eition
 cube x,y*GND Vcc切替 z:データ線
 x,yに接続される線(9本ずつ)を逐次切り替え、DATAのアナログ出力を読むことで
 信号を感知。

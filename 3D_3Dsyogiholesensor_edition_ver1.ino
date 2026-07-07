@@ -296,7 +296,7 @@ void loop() {
   for(n=0;n<9;n++)
   {
     MCP_1.write1(n,LOW);
-    MCP_2.wrote1(n,LOW);
+    MCP_2.write1(n,LOW);
   }
   
   t++;

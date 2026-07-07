@@ -274,10 +274,11 @@ void loop() {
   }
   x=t/9;
   y=t%9;//特定の行列をVcc,GNDとし、それ以外をGND,Vccとする。
-
+  delay(5);
   for(n=0;n<9;n++)
   {
     banmen[n][x][y]=hantei(n);
+    delay(5);
   }
   /*
   banmen[0][x][y]=hantei(1);  
@@ -291,6 +292,12 @@ void loop() {
   banmen[8][x][y]=hantei(9);
   */
   Serial.println("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d",x,y,banmen[0][x][y],banmen[1][x][y],banmen[2][x][y],banmen[3][x][y],banmen[4][x][y],banmen[5][x][y],banmen[6][x][y],banmen[7][x][y],banmen[8][x][y]);
+  delay(5);
+  for(n=0;n<9;n++)
+  {
+    mcp_1.digitalWrite(n,LOW);
+    mcp_2.digitalWrite(n,LOW);
+  }
   
   t++;
   if(t==80)

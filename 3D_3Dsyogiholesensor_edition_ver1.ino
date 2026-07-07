@@ -88,7 +88,7 @@ void setup() {
   Serial.print("MCP23S17_1 begin:");
   Serial.println(b?"true":"false");
   delay(100);
-  bool b = MCP_2.begin();
+  bool c = MCP_2.begin();
   Serial.print("MCP23S17_2 begin:");
   Serial.println(b?"true":"false");
   delay(100);

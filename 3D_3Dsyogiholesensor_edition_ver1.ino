@@ -291,12 +291,12 @@ void loop() {
   banmen[7][x][y]=hantei(8);
   banmen[8][x][y]=hantei(9);
   */
-  Serial.println("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d",x,y,banmen[0][x][y],banmen[1][x][y],banmen[2][x][y],banmen[3][x][y],banmen[4][x][y],banmen[5][x][y],banmen[6][x][y],banmen[7][x][y],banmen[8][x][y]);
+  Serial.printf("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",x,y,banmen[0][x][y],banmen[1][x][y],banmen[2][x][y],banmen[3][x][y],banmen[4][x][y],banmen[5][x][y],banmen[6][x][y],banmen[7][x][y],banmen[8][x][y]);
   delay(5);
   for(n=0;n<9;n++)
   {
-    mcp_1.digitalWrite(n,LOW);
-    mcp_2.digitalWrite(n,LOW);
+    MCP_1.write1(n,LOW);
+    MCP_2.wrote1(n,LOW);
   }
   
   t++;

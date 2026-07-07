@@ -82,16 +82,14 @@ int banmen[9][9][9]={0};
 void setup() {
   Serial.begin(115200);
   Serial.println();
-  Serial.print("MCP23S17_LIB_ VERSION:");
-  Serial.println(MCP23S17_LIB_ VERSION);
   delay(100);
   SPI.begin();
   bool b = MCP_1.begin();
-  Serial.print("MCP23S17_1 begin:")
+  Serial.print("MCP23S17_1 begin:");
   Serial.println(b?"true":"false");
   delay(100);
   bool b = MCP_2.begin();
-  Serial.print("MCP23S17_2 begin:")
+  Serial.print("MCP23S17_2 begin:");
   Serial.println(b?"true":"false");
   delay(100);
   MCP_1.pinMode8(0,0x00);

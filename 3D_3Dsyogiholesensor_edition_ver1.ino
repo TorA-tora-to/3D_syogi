@@ -175,8 +175,8 @@ int hantei(int floorn)//階層、位置を入力し、磁石センサ光セン�
     }
     else
     {
-      adc_DATA.read(MCP3208::Channel::SINGLE_floorn-1,mdata);
-      adc_position.read(MCP3208::Channel::SINGLE_floorn-1,mfrd);
+      adc_DATA.read(static_cast<MCP3208::Channel>(floorn-1));
+      adc_position.read(static_cast<MCP3208::Channel>(floorn-1));
     }
 
   

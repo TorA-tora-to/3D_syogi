@@ -64,7 +64,6 @@ int x,y;
 int white=500;
 
 int floorn;//階層指定
-int time;
 int t=0,t0,n;
 
 /*

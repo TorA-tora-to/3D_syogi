@@ -153,7 +153,7 @@ void setup() {
   for (int pin = 0; pin < 16; pin++)
   {
     int val2 = MCP_2.read1(pin);
-    Serial.print(val);
+    Serial.print(val2);
     Serial.print(' ');
     delay(100);
   }
@@ -164,7 +164,7 @@ void setup() {
   SPI.beginTransaction(settings);
 }
 
-int hantei(floorn)//階層、位置を入力し、磁石センサ光センサを読み取る。
+int hantei(int floorn)//階層、位置を入力し、磁石センサ光センサを読み取る。
 {
     int koma=0;
     int mdata,mfrd;

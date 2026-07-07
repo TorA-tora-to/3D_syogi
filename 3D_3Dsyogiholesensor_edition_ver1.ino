@@ -152,7 +152,7 @@ void setup() {
   Serial.println();
   for (int pin = 0; pin < 16; pin++)
   {
-    val = MCP_2.read1(pin);
+    int val2 = MCP_2.read1(pin);
     Serial.print(val);
     Serial.print(' ');
     delay(100);

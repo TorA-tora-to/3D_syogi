@@ -8,37 +8,37 @@ x,yに接続される線(9本ずつ)を逐次切り替え、DATAのアナログ�
 */
 
 #include <MCP23S17.h>
-#include<MCP320x.h>
+#include<Mcp320x.h>
 #include<SPI.h>
 
-#define SPICLOCK 37;//SCK
-#define SPIMOSI 36;//MOSI
-#define SPIMISO 35;//MISO
-#define CS1 43;//MCP23S17:1,CS
-#define CS2 44;//MCP23S17:2,CS
-#define leftKomadai 15;//left komadai's DATA
-#define rightKomadai 20;//right komadai's DATA
-#define DATA 16;//mainboards' DATA(board1~8) MCP3208
-#define DATA9 41;//mainords' board9 DATA pin
-#define frd 17;//mainboards' Position(borad1~8) MCP3208
-#define frd9 40;//mainboards' board9 position pin
-#define SW1 12;//push sw1
-#define SW2 13;//push sw2
-#define LED 14;//LED
-#define sSEGa 4;//7segment LED a:7
-#define sSEGb 5;//7segment LED b:6
-#define sSEGc 6;//7segment LED c:4
-#define sSEGa 7;//7segment LED d:2
-#define sSEGb 8;//7segment LED e:1
-#define sSEGa 9;//7segment LED f:9
-#define sSEGa 10;//7segment LED g:10
-#define Vref 5000;
-#define ADC_CLK 1600000;
+#define SPICLOCK 37//SCK
+#define SPIMOSI 36//MOSI
+#define SPIMISO 35//MISO
+#define CS1 43//MCP23S17:1,CS
+#define CS2 44//MCP23S17:2,CS
+#define leftKomadai 15//left komadai's DATA
+#define rightKomadai 20//right komadai's DATA
+#define DATA 16//mainboards' DATA(board1~8) MCP3208
+#define DATA9 41//mainords' board9 DATA pin
+#define frd 17//mainboards' Position(borad1~8) MCP3208
+#define frd9 40//mainboards' board9 position pin
+#define SW1 12//push sw1
+#define SW2 13//push sw2
+#define LED 14//LED
+#define sSEGa 4//7segment LED a:7
+#define sSEGb 5//7segment LED b:6
+#define sSEGc 6//7segment LED c:4
+#define sSEGa 7//7segment LED d:2
+#define sSEGb 8//7segment LED e:1
+#define sSEGa 9//7segment LED f:9
+#define sSEGa 10//7segment LED g:10
+#define Vref 5000
+#define ADC_CLK 1600000
 
 MCP23S17 MCP_1(CS1,SPIMISO,SPIMOSI,SPICLOCK);//MCP1:mainboardGND rightkomadaiVcc,GND 
 MCP23S17 MCP_2(CS2,SPIMISO,SPIMOSI,SPICLOCK);//MCP2:mainboardVcc leftkomadaiVcc,GND
-MCP3208 adc_DATA(Vref);//MCP3208:board(1~8)DATA
-MCP3208 adc_position(Vref);//MCP3208:board(1~8)position;
+MCP3208 adc_DATA(Vref,16);//MCP3208:board(1~8)DATA
+MCP3208 adc_position(Vref,17);//MCP3208:board(1~8)position;
 //各コマの読み取り最大値
 int gyoku=1023;
 int hisya=970;
@@ -63,7 +63,7 @@ int x,y;
 
 int white=500;
 
-int floor;//階層指定
+int floorn;//階層指定
 int time;
 int t=0,t0,n;
 
@@ -167,18 +167,19 @@ void setup() {
   SPI.beginTransaction(settings);
 }
 
-int hantei(floor)//階層、位置を入力し、磁石センサ光センサを読み取る。
+int hantei(floorn)//階層、位置を入力し、磁石センサ光センサを読み取る。
 {
     int koma=0;
-    if(floor==9)
+    int mdata,mfrd;
+    if(floorn==9)
     {
       mdata=analogRead(DATA9);
       mfrd=analogRead(frd9);
     }
     else
     {
-      mdata=adc_DATA.analogRead(floor-1);
-      mfrd=adc_position.analogRead(floor-1);
+      mdata=adc_DATA.analogRead(floorn-1);
+      mfrd=adc_position.analogRead(floorn-1);
     }
 
   
@@ -272,7 +273,7 @@ void loop() {
   {
         digitalWrite(14,HIGH);
         delay(500);
-        difgitalWrite(14,LOW);
+        digitalWrite(14,LOW);
   }
   x=t/9;
   y=t%9;//特定の行列をVcc,GNDとし、それ以外をGND,Vccとする。

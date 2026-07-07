@@ -67,6 +67,7 @@ int floor;//階層指定
 int time;
 int t=0,t0,n;
 
+/*
 int banmen1[9][9]={0};
 int banmen2[9][9]={0};
 int banmen3[9][9]={0};
@@ -76,6 +77,7 @@ int banmen6[9][9]={0};
 int banmen7[9][9]={0};
 int banmen8[9][9]={0};
 int banmen9[9][9]={0};
+*/
 int banmen[9][9][9]={0};
 
 void setup() {

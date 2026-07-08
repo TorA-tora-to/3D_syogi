@@ -10,6 +10,7 @@ x,yに接続される線(9本ずつ)を逐次切り替え、DATAのアナログ�
 #include <MCP23S17.h>
 #include<Mcp320x.h>
 #include<SPI.h>
+#include<SevSeg.h>
 
 #define SPICLOCK 37//SCK
 #define SPIMOSI 36//MOSI
@@ -39,6 +40,9 @@ MCP23S17 MCP_1(CS1,SPIMISO,SPIMOSI,SPICLOCK);//MCP1:mainboardGND rightkomadaiVcc
 MCP23S17 MCP_2(CS2,SPIMISO,SPIMOSI,SPICLOCK);//MCP2:mainboardVcc leftkomadaiVcc,GND
 MCP3208 adc_DATA(Vref,16);//MCP3208:board(1~8)DATA
 MCP3208 adc_position(Vref,17);//MCP3208:board(1~8)position;
+
+SevSeg sevseg;
+
 //各コマの読み取り最大値
 int gyoku=1023;
 int hisya=970;
@@ -162,10 +166,21 @@ void setup() {
   SPISettings settings(ADC_CLK, MSBFIRST, SPI_MODE0);
   
   SPI.beginTransaction(settings);
+
+  byte numDigits =1;
+  byte digitPins[]={};
+  byte segmentPins[]={4,5,6,7,8,9,10,11};
+  bool resistorsOnSegments=false;
+  byte hardwareConfig=COMMON_ANODE;
+  sevseg.begin(hardwareConfig, numDigits, digitPins, segmentPins, resistorsOnSegments);
+  sevseg.setBrightness(90);
+
 }
 
 int hantei(int floorn)//階層、位置を入力し、磁石センサ光センサを読み取る。
 {
+    sevseg.setNumber(0);
+    sevseg.refreshDisplay();
     int koma=0;
     int mdata,mfrd;
     if(floorn==9)

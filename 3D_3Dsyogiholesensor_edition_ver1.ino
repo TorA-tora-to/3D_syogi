@@ -4,7 +4,18 @@ cube x,y*GND Vcc切替 z:データ線
 x,yに接続される線(9本ずつ)を逐次切り替え、DATAのアナログ出力を読むことで
 信号を感知。
 予算;12万くらいかな?
-
+7セグ表示
+0　通常
+1　シリアル通信不可
+2  シリアル通信不可
+3　シリアル通信不可
+4  測定異常
+5  
+6
+7
+8
+9
+シリアル通信テストを送信(test)したとき、Unity側から、返信する(check)
 */
 
 #include <MCP23S17.h>
@@ -64,6 +75,8 @@ int gyoku2=70;
 
 int x,y;
 
+cher test_read;
+int error_code;
 
 int white=500;
 
@@ -179,8 +192,7 @@ void setup() {
 
 int hantei(int floorn)//階層、位置を入力し、磁石センサ光センサを読み取る。
 {
-    sevseg.setNumber(0);
-    sevseg.refreshDisplay();
+    
     int koma=0;
     int mdata,mfrd;
     if(floorn==9)
@@ -281,6 +293,19 @@ int hantei(int floorn)//階層、位置を入力し、磁石センサ光セン�
 
 
 void loop() {
+  Serial.println("test");
+  delay(5);
+  if(Serial.available()>0)
+  {
+   test_read=Serial.read();
+  }
+  else
+  {
+    error_code=1;
+    sevseg.setNumber(error_code);
+    sevseg.refreshDisplay();
+  }
+  
   if(t==0)
   {
         digitalWrite(14,HIGH);

@@ -350,18 +350,18 @@ void loop() {
   {
     x=t/9;
     y=t%9;//特定の行列をVcc,GNDとし、それ以外をGND,Vccとする。
-    MCP_1.digitalWrite(x,LOW);
-    MCP_2.digitalWrite(y,HIGH);
+    MCP_1.write1(x,LOW);
+    MCP_2.write1(y,HIGH);
 
-    for(n=0;n<9,n++)
+    for(n=0;n<9;n++)
     {
       if(n!=x)
       {
-        MCP_1.digitalWrite(n,HIGH);
+        MCP_1.write1(n,HIGH);
       }
       if(n!=y)
       {
-        MCP_2.digitalWrite(n,LOW);
+        MCP_2.write1(n,LOW);
       }
     }
     

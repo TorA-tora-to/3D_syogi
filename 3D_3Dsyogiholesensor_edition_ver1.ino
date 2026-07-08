@@ -75,7 +75,7 @@ int gyoku2=70;
 
 int x,y;
 
-char test_read;
+string test_read;
 int error_code;
 
 int white=500;
@@ -294,11 +294,12 @@ int hantei(int floorn)//階層、位置を入力し、磁石センサ光セン�
 
 void loop() {
   Serial.println("test");
-  delay(5);
+  delay(20);
   if(Serial.available()>0)
   {
    test_read=Serial.read();
-    if(test_read=='test')
+   test_read.trim();
+   if(test_read=="test")
    {
     error_code=0;
     sevseg.setNumber(error_code);

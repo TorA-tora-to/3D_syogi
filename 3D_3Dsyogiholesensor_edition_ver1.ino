@@ -81,7 +81,7 @@ int error_code;
 int white=500;
 
 int floorn;//階層指定
-int t=0,t0,n;
+int t=0,t0,n,tm;
 
 /*
 int banmen1[9][9]={0};
@@ -95,6 +95,7 @@ int banmen8[9][9]={0};
 int banmen9[9][9]={0};
 */
 int banmen[9][9][9]={0};
+int mochigoma[2][3][3]={0};
 
 void setup() {
   Serial.begin(115200);
@@ -344,32 +345,51 @@ void loop() {
         delay(500);
         digitalWrite(14,LOW);
   }
-  x=t/9;
-  y=t%9;//特定の行列をVcc,GNDとし、それ以外をGND,Vccとする。
-  delay(5);
-  
-  for(n=0;n<9;n++)
+
+  if(t<81)
   {
-    banmen[n][x][y]=hantei(n);
+    x=t/9;
+    y=t%9;//特定の行列をVcc,GNDとし、それ以外をGND,Vccとする。
+    MCP_1.digitalWrite(x,LOW);
+    MCP_2.digitalWrite(y,HIGH);
+
+    for(n=0;n<9,n++)
+    {
+      if(n!=x)
+      {
+        MCP_1.digitalWrite(n,HIGH);
+      }
+      if(n!=y)
+      {
+        MCP_2.digitalWrite(n,LOW);
+      }
+    }
+    
     delay(5);
-  }
-  /*
-  banmen[0][x][y]=hantei(1);  
-  banmen[1][x][y]=hantei(2);
-  banmen[2][x][y]=hantei(3);
-  banmen[3][x][y]=hantei(4);
-  banmen[4][x][y]=hantei(5);
-  banmen[5][x][y]=hantei(6);
-  banmen[6][x][y]=hantei(7);
-  banmen[7][x][y]=hantei(8);
-  banmen[8][x][y]=hantei(9);
-  */
-  Serial.printf("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",x,y,banmen[0][x][y],banmen[1][x][y],banmen[2][x][y],banmen[3][x][y],banmen[4][x][y],banmen[5][x][y],banmen[6][x][y],banmen[7][x][y],banmen[8][x][y]);
-  delay(5);
-  for(n=0;n<9;n++)
-  {
-    MCP_1.write1(n,LOW);
-    MCP_2.write1(n,LOW);
+    
+    for(n=0;n<9;n++)
+    {
+      banmen[n][x][y]=hantei(n);
+      delay(5);
+    }
+    /*
+    banmen[0][x][y]=hantei(1);  
+    banmen[1][x][y]=hantei(2);
+    banmen[2][x][y]=hantei(3);
+    banmen[3][x][y]=hantei(4);
+    banmen[4][x][y]=hantei(5);
+    banmen[5][x][y]=hantei(6);
+    banmen[6][x][y]=hantei(7);
+    banmen[7][x][y]=hantei(8);
+    banmen[8][x][y]=hantei(9);
+    */
+    Serial.printf("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",x,y,banmen[0][x][y],banmen[1][x][y],banmen[2][x][y],banmen[3][x][y],banmen[4][x][y],banmen[5][x][y],banmen[6][x][y],banmen[7][x][y],banmen[8][x][y]);
+    delay(5);
+    for(n=0;n<9;n++)
+    {
+      MCP_1.write1(n,LOW);
+      MCP_2.write1(n,LOW);
+    }
   }
   
   t++;

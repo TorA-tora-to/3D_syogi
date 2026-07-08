@@ -347,6 +347,7 @@ void loop() {
   x=t/9;
   y=t%9;//特定の行列をVcc,GNDとし、それ以外をGND,Vccとする。
   delay(5);
+  
   for(n=0;n<9;n++)
   {
     banmen[n][x][y]=hantei(n);

@@ -298,6 +298,19 @@ void loop() {
   if(Serial.available()>0)
   {
    test_read=Serial.read();
+    if(test_read=='test')
+   {
+    error_code=0;
+    sevseg.setNumber(error_code);
+    sevseg.refreshDisplay();
+   }
+   else
+   {
+    error_code=2;
+    sevseg.setNumber(error_code);
+    sevseg.refreshDisplay();
+   }
+    
   }
   else
   {

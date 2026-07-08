@@ -75,7 +75,7 @@ int gyoku2=70;
 
 int x,y;
 
-string test_read;
+String test_read;
 int error_code;
 
 int white=500;
@@ -190,22 +190,30 @@ void setup() {
 
 }
 
-int hantei(int floorn)//階層、位置を入力し、磁石センサ光センサを読み取る。
+double hantei(int floorn)//階層、位置を入力し、磁石センサ光センサを読み取る。
 {
     
     int koma=0;
-    int mdata,mfrd;
+    double mdata=0,mfrd=0;
+    int turn;
     if(floorn==9)
     {
-      mdata=analogRead(DATA9);
-      mfrd=analogRead(frd9);
+      for(turn=0;turn<5;turn++)
+      {
+        mdata+=analogRead(DATA9);
+        mfrd+=analogRead(frd9);
+      }
     }
     else
     {
-      adc_DATA.read(static_cast<MCP3208::Channel>(floorn-1));
-      adc_position.read(static_cast<MCP3208::Channel>(floorn-1));
+      for(turn=0;turn<5;turn++)
+      {
+        mdata+=adc_DATA.read(static_cast<MCP3208::Channel>(floorn-1));
+        mfrd+=adc_position.read(static_cast<MCP3208::Channel>(floorn-1));
+      }      
     }
-
+    mdata/=5;
+    mfrd/=5;
   
     if(mdata<gyoku)
     {

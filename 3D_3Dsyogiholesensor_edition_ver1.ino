@@ -75,7 +75,7 @@ int gyoku2=70;
 
 int x,y;
 
-cher test_read;
+char test_read;
 int error_code;
 
 int white=500;

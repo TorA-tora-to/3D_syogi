@@ -6,9 +6,9 @@ x,yに接続される線(9本ずつ)を逐次切り替え、DATAのアナログ�
 予算;12万くらいかな?
 7セグ表示
 0　通常
-1　シリアル通信不可
-2  シリアル通信不可
-3　シリアル通信不可
+1　シリアル通信不可(返ってこない)
+2  シリアル通信不可(返ってきてもtestでない)
+3　シリアル通信不可(未起動)
 4  測定異常
 5  
 6
@@ -98,6 +98,16 @@ int banmen[9][9][9]={0};
 
 void setup() {
   Serial.begin(115200);
+  while(!Serial)
+  {
+    delay(100);
+    error_code=3;
+    sevseg.setNumber(error_code);
+    sevseg.refreshDisplay();
+  }
+  error_code=0;
+    sevseg.setNumber(error_code);
+    sevseg.refreshDisplay();
   Serial.println();
   delay(100);
   SPI.begin();

@@ -201,7 +201,7 @@ void setup() {
 
 }
 
-double hantei(int floorn)//階層、位置を入力し、磁石センサ光センサを読み取る。
+int hantei(int floorn)//階層、位置を入力し、磁石センサ光センサを読み取る。
 {
     
     int koma=0;
@@ -226,11 +226,11 @@ double hantei(int floorn)//階層、位置を入力し、磁石センサ光セ�
     mdata/=5;
     mfrd/=5;
   
-    if(mdata<gyoku)
+    if(mdata<gyoku2)
     {
       koma=-8;  
     }
-    else if(mdata<hisya)
+    else if(mdata<hisya2)
     {
       koma=-7;  
     }
@@ -286,11 +286,11 @@ double hantei(int floorn)//階層、位置を入力し、磁石センサ光セ�
     {
       koma=6;
     }
-    else if(DATA<hisya)
+    else if(mdata<hisya)
     {
       koma=7;
     }
-    else if(DATA<gyoku)
+    else if(mdata<gyoku)
     {
       koma=8;
     }
@@ -310,6 +310,98 @@ double hantei(int floorn)//階層、位置を入力し、磁石センサ光セ�
     return koma;  
 }
 
+int m_hantei(int left_right)
+{
+  int data=0;
+  int turn=0;
+  int kona=0;
+  if(left_right==0)
+  {
+    for(turn=0;turn<5;turn++)
+    {
+      data+=analogRead(15);
+    }
+  }
+  else if(left_right==1)
+  {
+    for(turn=0;turn<5;turn++)
+    {
+      data+=analogRead(20);
+    }
+  }
+  data/=5;
+  
+    if(data<gyoku2)
+    {
+      koma=-8;  
+    }
+    else if(data<hisya2)
+    {
+      koma=-7;  
+    }
+    else if(data<kaku2)
+    {
+      koma=-6;  
+    }
+    else if(data<kin2)
+    {
+      koma=-5;  
+    }
+    else if(data<gin2)
+    {
+      koma=-4;  
+    }
+    else if(data<kei2)
+    {
+      koma=-3;  
+    }
+    else if(data<kyou2)
+    {
+      koma=-2;  
+    }
+    else if(data<fu2)
+    {
+      koma=-1;  
+    }
+    else if(data<shiki)
+    {
+      koma=0;  
+    }
+    else if(data<fu)
+    {
+      koma=1;
+    }
+    else if(data<kyou)
+    {
+      koma=2;
+    }
+    else if(data<kei)
+    {
+      koma=3;
+    }
+    else if(data<gin)
+    {
+      koma=4;
+    }
+    else if(data<kin)
+    {
+      koma=5;
+    }
+    else if(data<kaku)
+    {
+      koma=6;
+    }
+    else if(data<hisya)
+    {
+      koma=7;
+    }
+    else if(data<gyoku)
+    {
+      koma=8;
+    }
+
+  return koma;
+}
 
 void loop() {
   Serial.println("test");
@@ -365,7 +457,7 @@ void loop() {
       }
     }
     
-    delay(5);
+    delay(10);
     
     for(n=0;n<9;n++)
     {
@@ -391,9 +483,46 @@ void loop() {
       MCP_2.write1(n,LOW);
     }
   }
+  else
+  {
+    tm=t-81;
+    x=tm/3;
+    y=tm&3;
+    MCP_1.write1(x+10,HIGH);
+    MCP_1.write1(y+13,LOW);
+    MCP_2.write1(x+10,HIGH);
+    MCP_2.write1(y+13,LOW);
+    for(n=0;n<3;n++)
+    {
+      if(x!=n)
+      {
+        MCP_1.write1(n+10,LOW);
+        MCP_2.write1(n+10,LOW);
+      }
+      if(y!=n)
+      {
+        MCP_1.write1(n+13,HIGH);
+        MCP_2.write1(n+13,HIGH);
+      }
+      //持ち駒の判定
+      mochigoma[0][x][y]=m_hantei(0);//左
+      delay(5);
+      mochigoma[1][x][y]=-1*m_hantei(1);//右
+      delay(5);
+      Serial.printf("%d,%d,%d,%d",x,y,mochigoma[0][x][y],mochigoma[1][x][y]);
+      delay(5);
+      for(n=0;n<3;n++)
+      {
+        MCP_1.write1(x+10,LOW);
+        MCP_1.write1(y+13,LOW);
+        MCP_2.write1(x+10,LOW);
+        MCP_2.write1(y+13,LOW);
+      }      
+    }
+  }
   
   t++;
-  if(t==80)
+  if(t==89)
   {
     t=0;
   }

@@ -17,3 +17,5 @@ z方向は出力線をアナログ値で読む。
 マイコンボード:https://akizukidenshi.com/catalog/g/g131148/
 
 基板間固定金具:https://www.hirosugi-net.co.jp/shop/c/c1011/
+
+I made "3D syogi" on either software and hardware.

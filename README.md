@@ -18,7 +18,8 @@ z方向は出力線をアナログ値で読む。
 
 基板間固定金具:https://www.hirosugi-net.co.jp/shop/c/c1011/
 
-I made "3D syogi" on either software and hardware.
+I made "3D syogi" on either software and hardware.In　recent years,There are alot of 3D board games.
+for example 3Dches,3Dothello,and so on.But, I couldn't find "3D syogi",so I decide to mede "3Dsyogi".
 
 
 -8,-108,8,108玉

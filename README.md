@@ -22,7 +22,7 @@ We made "3D syogi" on either software and hardware.In recent years,There are alo
 for example 3Dches,3Dothello,and so on.But, We couldn't find "3D syogi",so I decide to mede "3Dsyogi".
 The hard ware, electric circuit designed on "KICAD".We use "ESP32-S3-DevKitC-1-N8R8 ESP32-S3-WROOM-1 [1]"
 to control the circuit and to get and send infometion of sensors.Also we write program of control ESP32 by Alduino language.
-The way of ditecting peice of syogi,we use hole sensor and photo transistor.
+The way of ditecting peice of syogi,we use hole sensor [2] and photo transistor [3].if magnet is into the peises,we can measure the Magnetic flux density of the magnet.So 
 
 -8,-108,8,108玉
 -7,-107,7,107飛車

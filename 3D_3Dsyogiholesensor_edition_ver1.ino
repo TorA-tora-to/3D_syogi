@@ -70,7 +70,7 @@ int kei2=320;
 int gin2=270;
 int kin2=220;
 int kaku2=170;
-int gisya2=120;
+int hisya2=120;
 int gyoku2=70;
 
 int x,y;
@@ -205,7 +205,23 @@ void setup() {
 
 int hantei(int floorn)//階層、位置を入力し、磁石センサ光センサを読み取る。
 {
-    
+    int gyoku=1023;
+    int hisya=970;
+    int kaku=920;
+    int kin=870;
+    int gin=820;
+    int kei=770;
+    int kyou=720;
+    int fu=670;
+    int shiki=600;//駒なしと歩の判断閾値
+    int fu2=420;
+    int kyou2=370;
+    int kei2=320;
+    int gin2=270;
+    int kin2=220;
+    int kaku2=170;
+    int hisya2=120;
+    int gyoku2=70;
     int koma=0;
     double mdata=0,mfrd=0;
     int turn;
@@ -314,9 +330,26 @@ int hantei(int floorn)//階層、位置を入力し、磁石センサ光セン�
 
 int m_hantei(int left_right)
 {
+  int gyoku=1023;
+  int hisya=970;
+  int kaku=920;
+  int kin=870;
+  int gin=820;
+  int kei=770;
+  int kyou=720;
+  int fu=670;
+  int shiki=600;//駒なしと歩の判断閾値
+  int fu2=420;
+  int kyou2=370;
+  int kei2=320;
+  int gin2=270;
+  int kin2=220;
+  int kaku2=170;
+  int hisya2=120;
+  int gyoku2=70;
   int data=0;
   int turn=0;
-  int kona=0;
+  int koma=0;
   if(left_right==0)
   {
     for(turn=0;turn<5;turn++)
@@ -467,6 +500,11 @@ void loop() {
       delay(5);
       banmen[n][x][y]=hantei(n);
       delay(5);
+      if(banmen[n][x][y]!=banmen_b[n][x][y])
+      {
+        Serial.printf("%d,%d,%d",t,n,banmen[n][x][y]);
+        delay(5);
+      }
     }
     /*
     banmen[0][x][y]=hantei(1);  
@@ -478,9 +516,10 @@ void loop() {
     banmen[6][x][y]=hantei(7);
     banmen[7][x][y]=hantei(8);
     banmen[8][x][y]=hantei(9);
-    */
+    
     Serial.printf("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",x,y,banmen[0][x][y],banmen[1][x][y],banmen[2][x][y],banmen[3][x][y],banmen[4][x][y],banmen[5][x][y],banmen[6][x][y],banmen[7][x][y],banmen[8][x][y]);
     delay(5);
+    */
     for(n=0;n<9;n++)
     {
       MCP_1.write1(n,LOW);

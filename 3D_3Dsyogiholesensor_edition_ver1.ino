@@ -96,6 +96,8 @@ int banmen9[9][9]={0};
 */
 int banmen[9][9][9]={0};
 int mochigoma[2][3][3]={0};
+int banmen_b[9][9][9]={0};
+int mochigoma_b[2][9][9]={0};
 
 void setup() {
   Serial.begin(115200);
@@ -461,6 +463,8 @@ void loop() {
     
     for(n=0;n<9;n++)
     {
+      banmen_b[n][x][y]=banmen[n][x][y];//buckup
+      delay(5);
       banmen[n][x][y]=hantei(n);
       delay(5);
     }
@@ -505,7 +509,11 @@ void loop() {
         MCP_2.write1(n+13,HIGH);
       }
       //持ち駒の判定
+      mochigoma_b[0][x][y]=mochigoma[0][x][y];
+      delay(5);
       mochigoma[0][x][y]=m_hantei(0);//左
+      delay(5);
+      mochigoma_b[0][x][y]=mochigoma[0][x][y];
       delay(5);
       mochigoma[1][x][y]=-1*m_hantei(1);//右
       delay(5);

@@ -17,7 +17,7 @@ z方向は出力線をアナログ値で読む。
 マイコンボード:https://akizukidenshi.com/catalog/g/g131148/
 
 基板間固定金具:https://www.hirosugi-net.co.jp/shop/c/c1011/
-
+#3Dsyogi 
 We made "3D syogi" on either software and hardware.In recent years,There are alot of 3D board games.
 for example 3Dches,3Dothello,and so on.But, We couldn't find "3D syogi",so I decide to mede "3Dsyogi".
 The hard ware, electric circuit designed on "KICAD".We use "ESP32-S3-DevKitC-1-N8R8 ESP32-S3-WROOM-1 [1]"

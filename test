@@ -167,18 +167,18 @@ void loop() {
   x=t/3;
   y=t%3;
 
-  digitalWrite(x+1,HIGH);
-  digitalWrite(y+4,LOW);
+  digitalWrite(x+1,LOW);
+  digitalWrite(y+4,HIGH);
   for(turn=0;turn<3;turn++)
   {
     if(turn!=x)
     {
-      digitalWrite(turn+1,LOW);
+      digitalWrite(turn+1,HIGH);
     }
 
     if(turn!=y)
     {
-      digitalWrite(turn+4,HIGH);
+      digitalWrite(turn+4,LOW);
     }
   }
   delay(10);

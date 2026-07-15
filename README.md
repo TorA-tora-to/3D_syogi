@@ -18,15 +18,23 @@ z方向は出力線をアナログ値で読む。
 
 基板間固定金具:https://www.hirosugi-net.co.jp/shop/c/c1011/
 
-# 3Dsyogi 
+# What is "3Dsyogi"
 
 We made "3D syogi" on either software and hardware.In recent years,There are alot of 3D board games.
 for example 3Dches,3Dothello,and so on.But, We couldn't find "3D syogi",so I decide to mede "3Dsyogi".
-The hard ware, electric circuit designed on "KICAD".We use "ESP32-S3-DevKitC-1-N8R8 ESP32-S3-WROOM-1 [1]"
+The software, 3Dgraphic is made by "Unity".
+The hardware, electric circuit is designed on "KICAD".We use "ESP32-S3-DevKitC-1-N8R8 ESP32-S3-WROOM-1 [1]"
 to control the circuit and to get and send infometion of sensors.Also we write program of control ESP32 by Alduino language.
-The way of ditecting peice of syogi,we use hole sensor [2] and photo transistor [3].if magnet is into the peises,we can measure the Magnetic flux density of the magnet.So 
+We use serial communication between hardware and software.The infomation which is ESP32 got send for Unity on realtime,
+and to influence the graphic by Unity.
+# The technology of hardware 
+The way of ditecting peice of syogi,we use hole sensor [2] and photo transistor [3].if magnet is into the peises of syogi,
+we can measure the Magnetic flux density of the magnet by the holesensor.Also if Vary the magnetic flux density for each piece,
+we can get vary of output voltage by holesensor.By using this method, we can distinguish the pieces.In syogi, it have very inportant consept "nari".It's like "promotion" in ches. In this rule,we turn over the piece so the direction of Magnetic flux　will
+turn over,too.so we can get infomation of "nari" by holesensor.In this game,we need  able to distinguish whose piece it is,so we drow harf of the piece bluck.
+And,we use LED and photo transistor to measure the direction.if the color of piece is bluck, the output voltage of photo transistorr is smaller them white.
 
--8,-108,8,108玉
+-8,-108,8,108玉　
 -7,-107,7,107飛車
 -6,-106,6,106角
 -5,-105,5,105金

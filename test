@@ -192,6 +192,11 @@ void loop() {
     Serial.printf("%d,%d",t,banmen[x][y]);
   }
 
+  for(turn=0;turn<3;turn++)
+  {
+    digitalWrite(turn+1,LOW);
+    digitalWrite(turn+4,LOW);
+  }
 
   t++;
   if(t==9)

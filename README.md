@@ -33,7 +33,8 @@ we can measure the Magnetic flux density of the magnet by the holesensor.Also if
 we can get vary of output voltage by holesensor.By using this method, we can distinguish the pieces.In syogi, it have very inportant consept "nari".It's like "promotion" in ches. In this rule,we turn over the piece so the direction of Magnetic flux　will
 turn over,too.so we can get infomation of "nari" by holesensor.In this game,we need  able to distinguish whose piece it is,so we drow harf of the piece bluck.
 And,we use LED and photo transistor to measure the direction.if the color of piece is bluck, the output voltage of photo transistorr is smaller them white.
-In this way, we can distinguish the pieces ,but ESP32 couldn't get data of sensors,becouse there are a lot of sensor ,and there aren't enough I/O pins.So we use sensor matrix.In ths way,all of the sensors use same data line to ESP32,but the Vcc lines and GND line will sepalate.
+In this way, we can distinguish the pieces ,but ESP32 couldn't get data of sensors,becouse there are a lot of sensor ,and there aren't enough I/O pins.So we use sensor matrix.In ths way,all of the sensors use same data line to ESP32,but the Vcc lines and GND line will sepalate by the rows and columns.Also, this project is 3Dsyogi,we need infomation of 9 flooers.
+if Vcc lines and GND lines are shear the all flooars,we can get infomations the same time.
 
 
 -8,-108,8,108玉　

@@ -445,7 +445,7 @@ void loop() {
   {
    test_read=Serial.read();
    test_read.trim();
-   if(test_read=="test")
+   if(test_read=="check")
    {
     error_code=0;
     sevseg.setNumber(error_code);

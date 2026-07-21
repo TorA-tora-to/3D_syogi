@@ -32,7 +32,7 @@ The way of ditecting peice of syogi,we use hole sensor [2] and photo transistor 
 we can measure the Magnetic flux density of the magnet by the holesensor.Also if Vary the magnetic flux density for each piece,
 we can get vary of output voltage by holesensor.By using this method, we can distinguish the pieces.In syogi, it have very inportant consept "nari".It's like "promotion" in ches. In this rule,we turn over the piece so the direction of Magnetic flux　will
 turn over,too.so we can get infomation of "nari" by holesensor.In this game,we need  able to distinguish whose piece it is,so we drow harf of the piece bluck.
-And,we use LED and photo transistor to measure the direction.if the color of piece is bluck, the output voltage of photo transistorr is smaller them white.
+And,we use LED and photo transistor to measure the luminosity of　light from reflect in the piece,and we can know the direction of it.if the color of piece is bluck, the output voltage of photo transistorr is smaller them white.
 In this way, we can distinguish the pieces ,but ESP32 couldn't get data of sensors,becouse there are a lot of sensor ,and there aren't enough I/O pins.So we use sensor matrix.In ths way,all of the sensors use same data line to ESP32,but the Vcc lines and GND line will sepalate.
 
 

@@ -18,6 +18,7 @@ z方向は出力線をアナログ値で読む。
 
 基板間固定金具:https://www.hirosugi-net.co.jp/shop/c/c1011/
 
+電源平滑キャパシタ:https://akizukidenshi.com/catalog/g/g108290/
 # What is "3Dsyogi"
 
 We made "3D syogi" on either software and hardware.In recent years,There are alot of 3D board games.

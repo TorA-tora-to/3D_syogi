@@ -1,0 +1,3 @@
+/*
+ If state of switch chenged, we mejer all sensor the magnet.Send data to PC.
+*/

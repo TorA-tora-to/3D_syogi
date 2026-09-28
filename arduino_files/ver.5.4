@@ -117,9 +117,9 @@ void loop() {
         sensor_data=analogRead(data);
         delay(10);
         koma[x][y]==hantei(sensor_data);
-        if(turn%2==1)//後手は+100
+        if(turn%2==1)//後手は負
         {
-          koma[x][y]+=100;
+          koma[x][y]*=-1;
         }
 
         delay(2);
@@ -144,7 +144,7 @@ void loop() {
         left_sd=analogRead(leftdata);
         right_sd=analogRead(rightdata);
         delay(10);//基板のright駒台の方が先手と仮定
-        mochigoma[0][x][y]=hantei(left_sd)+100;//0:left/1:right
+        mochigoma[0][x][y]=-1*hantei(left_sd);//0:left/1:right
         delay(2);
         mochigoma[1][x][y]=hantei(right_sd);
         

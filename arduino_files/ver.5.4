@@ -1,0 +1,160 @@
+/*
+  MCP23S17:https://github.com/RobTillaart/MCP23S17
+  MCP23S08:https://github.com/RobTillaart/MCP23S08
+  74HC4511:https://github.com/Andy4495/LED744511/tree/main
+*/
+#include "MCP23S17.h"
+#include "MCP23S08.h"
+#include "LED744511.h"
+
+const int CLK=12;
+const int MOSI=13;
+const int MISO=14;
+const int CS1=11;//Vcc
+const int CS2=10;//GND
+const int CS3=21;
+const int SD=9
+const int data=17;
+const int rightdata=16;
+const int leftdata=15;
+const int switchpin=7;
+
+int i,x,y;
+int turn=0;
+int koma[9][9]={0};
+int mochigoma[2][3][3]={0};
+double sensor_data=0;
+double right_sd;
+double left_sd=0;
+
+MCP23S17 MCP_1(CS1,MISO,MOSI,CLK);//CS,SO,SI,CLK
+MCP23S17 MCP_2(CS2,MISO,MOSI,CLK);
+MCP23S08 MCP_3(CS3,MISO,MOSI,CLK);
+LED744511 LED(14,15,16,17,47);
+
+void setup() {
+  Serial.begin(115200);
+  Serial.println();
+  Serial.println(__FILE__);
+  Serial.print("MCP23S17_LIB_VERSION: ");
+  Serial.println(MCP23S17_LIB_VERSION);
+  Serial.print("MCP23S08_LIB_VERSION: ");
+  Serial.println(MCP23S08_LIB_VERSION);
+  Serial.println();
+  delay(100);
+  for(i=0;i<10;i++)
+  {
+    LED.writeBCD(i);
+    delay(100);
+  }
+  LED.writeBCD(0);
+  SPI.begin();
+
+  bool b = MCP_1.begin();
+  bool c = MCP_2.begin();
+  bool d = MCP_3.begin();
+  Serial.print("MCP_1");
+  Serial.println(b ? "true" : "false");
+  delay(100);
+  Serial.print("MCP_2");
+  Serial.println(c ? "true" : "false");
+  delay(100);
+  Serial.print("MCP_3");
+  Serial.println(d ? "true" : "false");
+  delay(100);
+  LED.writeBCD(1);
+  for(i=0;i<16;i++)
+  {
+    MCP_1.write1(i,LOW);
+  }
+  delay(100);
+  for(i=0;i<16;i++)
+  {
+    MCP_2.write1(i,LOW);
+  }
+  delay(100);
+  for(i=0;i<8;i++)
+  {
+    MCP_3.write1(i,LOW);
+  }
+  delay(100);
+
+  pinMode(data,input);//メイン基板センサデータ
+  pinMode(rightdata,input);//駒台センサデータ
+  pinMode(leftdata,input);
+  pinMode(switchpin,input);
+  LED.writeLED(2);
+}
+
+void loop() {
+  if((turn%2==0&&digitalRead(switchpin)==HIGH)||(turn%2==1&&digitalRead(switchpin)==LOW))
+  {
+    LED.write(3);
+    //A7~B0~B7(7~15)
+    for(i=7;i<16;i++)
+    {
+      MCP_1.write1(i,LOW);//Vcc,y
+      MCP_2.write1(i,HIGH);//GND,x
+      delay(2);
+    }
+    for(i=1;i<4;i++)
+    {
+      MCP_1(i+3,LOW);//Vcc
+      MCP_1(i,HIGH);//GND
+      MCP_2(i+3,LOW);
+      MCP_2(i,HIGH);
+      delay(2);
+    }
+    delay(100);
+
+    for(y=7;y<16;y++)//盤面センサ
+    {
+      MCP_1.write1(y,HIGH);
+      for(x=7;x<16,x++)
+      {
+        MCP_2.write1(x,LOW);
+        delay(6);
+        sensor_data=analogRead(data);
+        delay(10);
+        koma[x][y]==hantei(sensor_data);
+        if(turn%2==1)//後手は+100
+        {
+          koma[x][y]+=100;
+        }
+
+        delay(2);
+        for(i=7;i<16;i++)
+        {
+          MCP_1.write1(i,LOW);//Vcc
+          MCP_2.write1(i,HIGH);//GND
+        }
+        delay(2);
+      }
+    }
+
+    for(y=4;y<8;y++)//持ち駒センサ
+    {
+      MCP_1.write1(y,HIGH);
+      MCP_2.write1(y,HIGH);
+      for(x=1;x<4;x++)
+      {
+        MCP_1.write1(x,LOW);
+        MCP_2.write1(x,LOW);
+        delay(6);
+        left_sd=analogRead(leftdata);
+        right_sd=analogRead(rightdata);
+        delay(10);//基板のright駒台の方が先手と仮定
+        mochigoma[0][x][y]=hantei(left_sd)+100;//0:left/1:right
+        delay(2);
+        mochigoma[1][x][y]=hantei(right_sd);
+        
+      }
+    }
+
+    turn++;
+  }
+  else
+  {
+    LED.write(4);
+  }
+}

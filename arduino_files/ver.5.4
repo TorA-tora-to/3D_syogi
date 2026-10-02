@@ -116,7 +116,7 @@ void loop() {
     for(y=7;y<16;y++)//盤面センサ
     {
       MCP_1.write1(y,HIGH);
-      for(x=7;x<16,x++)
+      for(x=7;x<16;x++)
       {
         MCP_2.write1(x,LOW);
         delay(6);//この辺りを複数回実行し、正しいデータを読めるようにする。

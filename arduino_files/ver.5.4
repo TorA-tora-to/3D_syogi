@@ -22,6 +22,7 @@ const int switchpin=7;
 int i,x,y;
 int turn=0;
 int koma[9][9]={0};
+int koma_buckup[9][9]={0};//バックアップによって差分を取り、パソコンに送る。
 int mochigoma[2][3][3]={0};
 int sente;
 double sensor_data=0;
@@ -267,6 +268,19 @@ void loop() {
           mochigoma[0][x][y]=-1*hantei(left_sd);//0:left/1:right
           delay(2);
           mochigoma[1][x][y]=hantei(right_sd);
+        }
+      }
+    }
+
+    for(y=0;y<9;y++)
+    {
+      for(x=0;x<9;x++)
+      {
+        if(koma[y][x]!=koma_buckup[y][x])
+        {
+          Serial.printf("%d,%d,%d",x-1,y-1,koma[y][x]);
+          koma_buckup[y][x]=koma[y][x];
+          delay(2);
         }
       }
     }

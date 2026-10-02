@@ -88,7 +88,7 @@ void setup() {
   LED.writeBCD(2);
   //DIPスイッチ0番を読み取り、先手後手と駒台の関係を指定する。
   delay(1000);
-  sente=MCP_3.read1(0)//HIGHなら、正面が先手(rightkomadaiが先手)
+  sente=MCP_3.read1(0);//HIGHなら、正面が先手(rightkomadaiが先手)
 }
 
 int hantei(double data)//読み取り値に応じて駒を判別する

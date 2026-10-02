@@ -93,7 +93,94 @@ void setup() {
 
 int hantei(double data)//読み取り値に応じて駒を判別する
 {
-  return 0;//(仮)
+  const int gyoku=800;//以下、範囲最下
+  const int hisya=770;
+  const int kaku=740;
+  const int kin=710;
+  const int gin=680; 
+  const int kei=650;
+  const int kyou=620;
+  const int fu=590;
+  const int nari_fu=410;//以下、範囲最上
+  const int nari_kyou=380;
+  const int nari_kei=350;
+  const int nari_gin=320;
+  const int KIN=290;
+  const int nari_kaku=260;
+  const int nari_hisya=230;
+  const int GYOKU=200;
+
+  int out;
+
+  if(data<GYOKU)
+  {
+    out=-8;
+  }
+  else if(data<nari_hisya)
+  {
+    out=-7;
+  }
+  else if(data<nari_kaku)
+  {
+    out=-6;
+  }
+  else if(data<KIN)
+  {
+    out=-5;
+  }
+  else if(data<nari_gin)
+  {
+    out=-4;
+  }
+  else if(data<nari_kei)
+  {
+    out=-3;
+  }
+  else if(data<nari_kyou)
+  {
+    out=-2;
+  }
+  else if(data<nari_fu)
+  {
+    out=-1;
+  }
+  else if(data>gyoku)
+  {
+    out=8;
+  }
+  else if(data>hisya)
+  {
+    out=7;
+  }
+  else if(data>kaku)
+  {
+    out=6;
+  }
+  else if(data>kin)
+  {
+    out=5;
+  }
+  else if(data>gin)
+  {
+    out=4;
+  }
+  else if(data>kei)
+  {
+    out=3;
+  }
+  else if(data>kyou)
+  {
+    out=2;
+  }
+  else if(data>fu)
+  {
+    out=1;
+  }
+  else
+  {
+    out=0;
+  }
+  return out;
 }
 
 void loop() {

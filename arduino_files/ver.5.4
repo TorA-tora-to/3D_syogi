@@ -23,6 +23,7 @@ int i,x,y;
 int turn=0;
 int koma[9][9]={0};
 int mochigoma[2][3][3]={0};
+int sente;
 double sensor_data=0;
 double right_sd;
 double left_sd=0;
@@ -62,6 +63,7 @@ void setup() {
   Serial.print("MCP_3");
   Serial.println(d ? "true" : "false");
   delay(100);
+  Serial.println("DIPスイッチ1を利用して、手番を設定して下さい");
   LED.writeBCD(1);
   for(i=0;i<16;i++)
   {
@@ -84,7 +86,9 @@ void setup() {
   pinMode(leftdata,INPUT);
   pinMode(switchpin,INPUT);
   LED.writeBCD(2);
-  //DIPスイッチ1番を読み取り、先手後手と駒台の関係を指定する。
+  //DIPスイッチ0番を読み取り、先手後手と駒台の関係を指定する。
+  delay(1000);
+  sente=MCP_3.read1(0)//HIGHなら、正面が先手(rightkomadaiが先手)
 }
 
 int hantei(double data)//読み取り値に応じて駒を判別する

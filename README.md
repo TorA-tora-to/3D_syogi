@@ -15,7 +15,7 @@ x,y方向はセンサに供給するVccとGNDのON,OFFを切り替える。
 We made "3D syogi" on either software and hardware.In recent years,There are alot of 3D board games.
 for example 3Dches,3Dothello,and so on.But, We couldn't find "3D syogi",so I decide to mede "3Dsyogi".
 The software, 3Dgraphic is made by "Unity".
-The hardware, electric circuit is designed on "KICAD".We use "ESP32-S3-DevKitC-1-N8R8 ESP32-S3-WROOM-1 [1]"
+The hardware, electric circuit is designed on "KICAD".We use "ESP32-S3-DevKitC-1-N8R8 ESP32-S3-WROOM-1" [1]
 to control the circuit and to get and send infometion of sensors.Also we write program of control ESP32 by Alduino language.
 We use serial communication between hardware and software.The infomation which is ESP32 got send for Unity on realtime,
 and to influence the graphic by Unity.
@@ -27,13 +27,7 @@ turn over,too.so we can get infomation of "nari" by holesensor.In this game,we n
 And,we use LED and photo transistor to measure the luminosity of　light from reflect in the piece,and we can know the direction of it.if the color of piece is bluck, the output voltage of photo transistorr is smaller them white.
 In this way, we can distinguish the pieces ,but ESP32 couldn't get data of sensors,becouse there are a lot of sensor ,and there aren't enough I/O pins.So we use sensor matrix.In ths way,all of the sensors use same data line to ESP32,but the Vcc lines and GND line will sepalate.
 
-
--8,-108,8,108玉　
--7,-107,7,107飛車
--6,-106,6,106角
--5,-105,5,105金
--4,-104,4,104銀
--3,-103,3,103桂馬
--2,-102,2,102香車
--1,-101,1,101歩
-0なし
+# 
+[1]"ESP32-S3-DevKitC-1-N8R8 ESP32-S3-WROOM-1" is one of micro computer board. It equip with microcomputer chip "ESP32 S3".
+This chip is one of ESP32 series which designed by "Espressif Systems"."ESP32-S3-DevKitC-1-N8R8"have 36 GPIO pins. Also,it equip
+8MB ROMs and 8MB RAMs.

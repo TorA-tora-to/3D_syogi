@@ -278,7 +278,7 @@ void loop() {
       {
         if(koma[y][x]!=koma_buckup[y][x])
         {
-          Serial.printf("%d,%d,%d",x-1,y-1,koma[y][x]);
+          Serial.printf("%d,%d,%d,%d",turn,x-1,y-1,koma[y][x]);
           koma_buckup[y][x]=koma[y][x];
           delay(2);
         }

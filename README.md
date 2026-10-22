@@ -34,4 +34,5 @@ This chip is one of ESP32 series which designed by "Espressif Systems"."ESP32-S3
 [2]"AH49HZ3-G1"is one of hall sensor. if this sensor into the magnetic field, it output data by magnetic field.
 this sensor is type of linear sensor so the data witch output is analog. 
 Also if this sensor into positive direction magnetic field,it output more than threshold.And it's also into negative direction magnetic field,it'll output less then threshold.
-threshold of this sensor is 2.5V.(if you Apply 5V)
+threshold of this sensor is senter voltage between from GND to Vcc.
+In tis project,it applyed voltage to Vcc 5V and to GND 0V. So, the threshold voltage will be 2.5V.

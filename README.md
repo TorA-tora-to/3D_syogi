@@ -31,6 +31,7 @@ In this way, we can distinguish the pieces ,but ESP32 couldn't get data of senso
 [1]"ESP32-S3-DevKitC-1-N8R8 ESP32-S3-WROOM-1" is one of micro computer board. It equip with microcomputer chip "ESP32 S3".
 This chip is one of ESP32 series which designed by "Espressif Systems"."ESP32-S3-DevKitC-1-N8R8"have 36 GPIO pins. Also,it equip
 8MB ROMs and 8MB RAMs. Proscssor　of the micro conputer is 32bit and witch frequency of prosess is 240MHz. So it can operat in big projects like this by the strong computing power.
+<br>
 [2]"AH49HZ3-G1"is one of hall sensor. if this sensor into the magnetic field, it output data by magnetic field.
 this sensor is type of linear sensor so the data witch output is analog. 
 Also if this sensor into positive direction magnetic field,it output more than threshold.And it's also into negative direction magnetic field,it'll output less then threshold.

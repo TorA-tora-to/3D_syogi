@@ -55,14 +55,14 @@ void setup() {
   pinMode(lkdata,INPUT);
   pinMode(rkdata,INPUT);
 
-  Serial.println();
-  Serial.println("-TEST-");
+  Serial.println(T,);
+  Serial.println("T,-TEST-");
   ttime=millis();
   while(step==0&&millis()-ttime<1000)//step0
   {
     if(Serial.read()==8)//シリアル通信正常通知
     {
-      Serial.println(10);
+      Serial.println(T,10);
       delay(10);
       step++;
       sLED.writeBCD(4);
@@ -73,11 +73,11 @@ void setup() {
     }
   }
   Serial.println();
-  Serial.print("MCP23S17_LIB_VERSION: ");
+  Serial.print("T,MCP23S17_LIB_VERSION: ");
   Serial.println(MCP23S17_LIB_VERSION);
-  Serial.print("MCP23S08_LIB_VERSION: ");
+  Serial.print("T,MCP23S08_LIB_VERSION: ");
   Serial.println(MCP23S08_LIB_VERSION);
-  Serial.println();
+  Serial.println(T);
   delay(500);
   for(x=0;x<10;x++)
   {
@@ -89,13 +89,13 @@ void setup() {
   bool b = MCP1.begin();
   bool c = MCP2.begin();
   bool d = MCP3.begin();
-  Serial.print("MCP_1");
+  Serial.print("T,MCP_1");
   Serial.println(b ? "true" : "false");
   delay(100);
-  Serial.print("MCP_2");
+  Serial.print("T,MCP_2");
   Serial.println(c ? "true" : "false");
   delay(100);
-  Serial.print("MCP_3");
+  Serial.print("T,MCP_3");
   Serial.println(d ? "true" : "false");
   delay(100);
 
@@ -130,9 +130,9 @@ void setup() {
 
   delay(1000);
 
-  Serial.println();
-  Serial.println("手番を10秒以内にDIPスイッチ0で設定してください。");
-  Serial.println("TOP側が先手の場合スイッチをONにしてください");
+  Serial.println(T);
+  Serial.println("T,手番を10秒以内にDIPスイッチ0で設定してください。");
+  Serial.println("T,TOP側が先手の場合スイッチをONにしてください");
   delay(500);
   for(x=10;x>0;x--)
   {
@@ -144,18 +144,18 @@ void setup() {
 
   if(MCP3.read1(0)==HIGH)//TOP側が先手番
   {
-    Serial.println("TOP側が先手、マイコン側が後手です");
+    Serial.println("T,TOP側が先手、マイコン側が後手です");
     const bool teban = 1;
   }
   else//TOP側が後手番
   {
-    Serial.println("側が先手マイコン、TOP側が後手です");
+    Serial.println("T,マイコン側が先手、TOP側が後手です");
     const bool teban = 0;
   }
 
   while(digitalRead(7)==HIGH)
   {
-    Serial.println("手番スイッチを切り替えて下さい");
+    Serial.println("T,手番スイッチを切り替えて下さい");
     delay(500);
   } 
   turn=0;
@@ -218,7 +218,7 @@ void loop() {
           MCP1.write1(x+7,HIGH);
           if(koma[x][y]!=koma[x][y])
           {
-            Serial.printf("%d,%d,%d,%d\n",turn,x,y,koma[x][y]);//差分のみ送信 手数(合算),マス位置(x,y),データ
+            Serial.printf("M,%d,%d,%d,%d\n",turn,x,y,koma[x][y]);//差分のみ送信 手数(合算),マス位置(x,y),データ
           }
           step=2;
         }   
@@ -289,11 +289,11 @@ void loop() {
           MCP2.write1(x+9,HIGH);
           if(mochigoma[0][x][y]!=mochigoma_buckup[0][x][y])
           {
-            Serial.printf("%d,%d,%d,%d\n",turn,x,y+9,mochigoma[0][x][y]);//差分のみ送信 手数(合算),マス位置(x,y+9),データ  left:0:y:9~11
+            Serial.printf("M,%d,%d,%d,%d\n",turn,x,y+9,mochigoma[0][x][y]);//差分のみ送信 手数(合算),マス位置(x,y+9),データ  left:0:y:9~11
           }
           if(mochigoma[1][x][y]!=mochigoma_buckup[1][x][y])
           {
-            Serial.printf("%d,%d,%d,%d\n",turn,x,y+12,mochigoma[1][x][y]);//差分のみ送信 手数(合算),マス位置(x,y+9),データ  right:1:y:12~14
+            Serial.printf("M,%d,%d,%d,%d\n",turn,x,y+12,mochigoma[1][x][y]);//差分のみ送信 手数(合算),マス位置(x,y+9),データ  right:1:y:12~14
           }
           step=2;
         }
@@ -306,10 +306,11 @@ void loop() {
       MCP1.write1(y+1,LOW);//GND
       MCP2.write1(y+12,LOW);
       ttime=millis();
-      while(millis()-ttime<120)
+      while(millis()-ttime<20)
       {
-
+        neopixelWrite(38,30,30,30);
       }
+      neopixelWrite(38,0,0,0);
     }
 
     for(x=8;x<16;x++)

@@ -56,13 +56,13 @@ void setup() {
   pinMode(rkdata,INPUT);
 
   Serial.println(T,);
-  Serial.println("T,-TEST-");
+  Serial.println("B,-TEST-");
   ttime=millis();
   while(step==0&&millis()-ttime<1000)//step0
   {
     if(Serial.read()==8)//シリアル通信正常通知
     {
-      Serial.println(T,10);
+      Serial.println(B,10);
       delay(10);
       step++;
       sLED.writeBCD(4);

@@ -1,0 +1,372 @@
+/*
+  各GND,Vccピン--Nomaly High
+  標準値3.3/2から20%の範囲外になった時に駒があると判定。SoftWere側で駒の種類を指定。
+  100msおきに1マスごとのデータを送信,Unity側は逐次同期
+
+  シリアル通信　　　USB経由
+  wifi経由で通信　　アクセスポイント化
+*/
+
+/*
+  MCP23S17:https://github.com/RobTillaart/MCP23S17
+  MCP23S08:https://github.com/RobTillaart/MCP23S08
+  74HC4511:https://github.com/Andy4495/LED744511/tree/main
+  Serial Communication to Unity : https://qiita.com/yjiro0403/items/54e9518b5624c0030531 
+
+  Thanks to Rob Tillaart's and Andy4495 for uploading GitHub. We use "MCP23S17.h" ,"MCP23S08.h" and "LED744511.h" library they created.
+*/
+
+#include "MCP23S17.h"
+#include "MCP23S08.h"
+#include "LED744511.h"
+#include <WiFi.h>
+#include <WebServer.h>
+
+const char* ssid = "ESP32-AP";
+const char* password = "password123";
+
+const int clk  = 12;
+const int mosi = 13;
+const int miso = 14;
+const int cs_mcp1 = 11;//MCP23S17 
+const int cs_mcp2 = 10;//MCP23S17 
+const int cs_mcp3 = 21;//MCP23S08
+const int data = 17;//main board data(input)
+const int rkdata = 16;//右駒台
+const int lkdata = 15;//左駒台
+const int switch_pin = 7;//手番入力;Low:先手;HIGH:後手
+
+unsigned int ttime = 0;
+unsigned int turn = 0;//手数カウンター
+
+bool koma[9][9] = {0};
+bool koma_buckup[9][9] = {0};
+bool mochigoma[2][3][3] = {0};
+bool mochigoma_buckup[2][3][3] = {0};
+
+int mdata = 0;
+int step=0;
+int x,y;
+
+MCP23S17 MCP1(cs_mcp1,miso,mosi,clk);
+MCP23S17 MCP2(cs_mcp2,miso,mosi,clk);
+MCP23S17 MCP3(cs_mcp3,miso,mosi,clk);
+LED744511 sLED(39,40,41,42,47);
+
+WiFiServer server(23);
+WiFiClient clint;
+
+void setup() {
+  Serial.begin(921600);
+
+  WiFi.softAP(ssid,password);
+
+  pinMode(7,INPUT);
+  pinMode(data,INPUT);
+  pinMode(lkdata,INPUT);
+  pinMode(rkdata,INPUT);
+
+  Serial.println();
+  Serial.println("-TEST-");
+  ttime=millis();
+  while(step==0&&millis()-ttime<1000)//step0
+  {
+    if(Serial.read()==8)//シリアル通信正常通知
+    {
+      Serial.println(10);
+      delay(10);
+      step++;
+      sLED.writeBCD(4);
+    }
+    else
+    {
+      sLED.writeBCD(5);
+    }
+  }
+  Serial.println();
+  Serial.print("MCP23S17_LIB_VERSION: ");
+  Serial.println(MCP23S17_LIB_VERSION);
+  Serial.print("MCP23S08_LIB_VERSION: ");
+  Serial.println(MCP23S08_LIB_VERSION);
+  Serial.println();
+  delay(500);
+  for(x=0;x<10;x++)
+  {
+    sLED.writeBCD(x);
+    delay(100);
+  }
+  sLED.writeBCD(0);
+  delay(500);
+  bool b = MCP1.begin();
+  bool c = MCP2.begin();
+  bool d = MCP3.begin();
+  Serial.print("MCP_1");
+  Serial.println(b ? "true" : "false");
+  delay(100);
+  Serial.print("MCP_2");
+  Serial.println(c ? "true" : "false");
+  delay(100);
+  Serial.print("MCP_3");
+  Serial.println(d ? "true" : "false");
+  delay(100);
+
+  for(x=8;x<16;x++)
+  {
+    MCP1.write1(x,HIGH);//VCCピン
+    delay(10);
+  }
+  for(x=0;x<8;x++)
+  {
+    MCP2.write1(x,LOW);//GNDピン
+    delay(10);
+  }
+  for(x=4;x<7;x++)
+  {
+    MCP1.write1(x,HIGH);//left駒台Vcc
+    delay(10);
+  }
+  for(x=1;x<4;x++)
+  {
+    MCP1.write1(x,LOW);//left駒台GND
+  }
+  for(x=9;x<12;x++)
+  {
+    MCP2.write1(x,HIGH);//right駒台Vcc
+    delay(10);
+  }
+  for(x=12;x<15;x++)
+  {
+    MCP2.write1(x,LOW);//right駒台GND
+  }
+
+  delay(1000);
+
+  Serial.println();
+  Serial.println("手番を10秒以内にDIPスイッチ0で設定してください。");
+  Serial.println("TOP側が先手の場合スイッチをONにしてください");
+  delay(500);
+  for(x=10;x>0;x--)
+  {
+    Serial.print("残り");
+    Serial.print(x);
+    Serial.println("秒");
+    delay(1000);
+  }
+
+  if(MCP3.read1(0)==HIGH)//TOP側が先手番
+  {
+    Serial.println("TOP側が先手、マイコン側が後手です");
+    const bool teban = 1;
+  }
+  else//TOP側が後手番
+  {
+    Serial.println("側が先手マイコン、TOP側が後手です");
+    const bool teban = 0;
+  }
+
+  while(digitalRead(7)==HIGH)
+  {
+    Serial.println("手番スイッチを切り替えて下さい");
+    delay(500);
+  } 
+  turn=0;
+  sLED.writeBCD(1);
+  x=2;
+  y=1;
+  int z=0;
+  while(x<50)
+  {
+    neopixelWrite(38,x,y,z);
+    delay(50);
+    x++;
+    y++;
+    z++;
+  }
+  //RGBLEDを使うことも検討
+  Serial.print("AP IP:");
+  Serial.println(WiFi.softAPIP());
+
+  server.begin();
+}
+
+void loop() {
+  if (!client || !client.connected()) {
+    client = server.available();
+    if (client) {
+      client.println("Connected to ESP32 Wireless Serial!");
+    }
+  }
+
+
+  if((turn%2==0&&digitalRead(7)==LOW)||(turn%2==1&&digitalRead(7)==HIGH))
+  {
+    if(turn%2==0)
+    {
+      sLED.writeBCD(1);
+    }
+    else
+    {
+      sLED.writeBCD(2);
+    }
+    ttime=millis();
+    step=0;
+    //mainBoard
+
+    for(y=0;y<9;y++)//y軸操作
+    {
+      step=10;
+      MCP2.write1(y,HIGH);//GND1~9の順
+
+      for(x=0;x<9;x++)//x軸操作
+      {
+        step=0;
+        MCP1.write1(x+7,LOW);//Vcc9~1の順
+        koma_buckup[x][y]=koma[x][y];
+        if(step==0&&millis()-ttime>30)
+        { 
+          mdata=analogRead(data);
+          if(mdata>1638&&mdata<2457)//中央値から20%以内
+          {
+            koma[x][y]=0;
+          }
+          else
+          {
+            koma[x][y]=1;
+          }
+          step=1;
+        }
+        if(step==1&&millis()-ttime>50)
+        { 
+          MCP1.write1(x+7,HIGH);
+          if(koma[x][y]!=koma[x][y])
+          {
+            client.printf("%d,%d,%d,%d\n",turn,x,y,koma[x][y]);
+            Serial.printf("%d,%d,%d,%d\n",turn,x,y,koma[x][y]);//差分のみ送信 手数(合算),マス位置(x,y),データ
+          }
+          step=2;
+        }   
+        if(step==2&&millis()-ttime>80)   
+        {
+          step=0;
+        }
+
+      }
+
+      MCP2.write1(y,LOW);
+      ttime=millis();
+      while(millis()-ttime<100)
+      {
+
+      }
+    }
+
+    //駒台
+    //left 駒台:MCP1:Vcc4~6(+4),GND1~3(+1)
+    //right駒台:MCP2:Vcc9~11(+9),GND12~14(+12)
+
+    for(y=0;y<3;y++)
+    {
+      step=10;
+      MCP1.write1(y+1,HIGH);//GND
+      MCP2.write1(y+12,HIGH);
+
+      for(x=0;x<3;x++)
+      {
+        step=0;
+        MCP1.write1(x+4,LOW);//Vcc
+        MCP2.write1(x+9,LOW);
+        mochigoma_buckup[0][x][y]=mochigoma[0][x][y];
+        mochigoma_buckup[1][x][y]=mochigoma[1][x][y];
+        if(step==0&&millis()-ttime>30)
+        { 
+          mdata=analogRead(lkdata);
+          if(mdata>1638&&mdata<2457)//中央値から20%以内
+          {
+            mochigoma[0][x][y]=0;
+          }
+          else
+          {
+            mochigoma[0][x][y]=1;
+          }
+
+          if(mochigoma[0][x][y]!=mochigoma_buckup[0][x][y])
+          {
+
+          }
+          delay(10);
+          mdata=analogRead(rkdata);
+          if(mdata>1638&&mdata<2457)//中央値から20%以内
+          {
+            mochigoma[1][x][y]=0;
+          }
+          else
+          {
+            mochigoma[1][x][y]=1;
+          }
+          step=1;
+        }
+
+        if(step==1&&millis()-ttime>50)
+        {
+          MCP1.write1(x+4,HIGH);//Vcc
+          MCP2.write1(x+9,HIGH);
+          if(mochigoma[0][x][y]!=mochigoma_buckup[0][x][y])
+          {
+            client.printf("%d,%d,%d,%d\n",turn,x,y+9,mochigoma[0][x][y]);
+            Serial.printf("%d,%d,%d,%d\n",turn,x,y+9,mochigoma[0][x][y]);//差分のみ送信 手数(合算),マス位置(x,y+9),データ  left:0:y:9~11
+          }
+          if(mochigoma[1][x][y]!=mochigoma_buckup[1][x][y])
+          {
+            client.printf("%d,%d,%d,%d\n",turn,x,y+12,mochigoma[0][x][y]);
+            Serial.printf("%d,%d,%d,%d\n",turn,x,y+12,mochigoma[1][x][y]);//差分のみ送信 手数(合算),マス位置(x,y+9),データ  right:1:y:12~14
+          }
+          step=2;
+        }
+
+        if(step==2&&millis()-ttime>100)   
+        {
+          step=0;
+        }   
+      }
+      MCP1.write1(y+1,LOW);//GND
+      MCP2.write1(y+12,LOW);
+      ttime=millis();
+      while(millis()-ttime<120)
+      {
+
+      }
+    }
+
+    for(x=8;x<16;x++)
+    {
+      MCP1.write1(x,HIGH);//VCCピン
+      delay(2);
+    }
+    for(x=0;x<8;x++)
+    {
+      MCP2.write1(x,LOW);//GNDピン
+      delay(2);
+    }
+    for(x=4;x<7;x++)
+    {
+      MCP1.write1(x,HIGH);//left駒台Vcc
+      delay(2);
+    }
+    for(x=1;x<4;x++)
+    {
+      MCP1.write1(x,LOW);//left駒台GND
+      delay(2);
+    }
+    for(x=9;x<12;x++)
+    {
+      MCP2.write1(x,HIGH);//right駒台Vcc
+      delay(2);
+    }
+    for(x=12;x<15;x++)
+    {
+      MCP2.write1(x,LOW);//right駒台GND
+      delay(2);
+    }
+    turn++;
+  }
+}

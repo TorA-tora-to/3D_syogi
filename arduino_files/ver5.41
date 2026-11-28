@@ -1,10 +1,17 @@
 /*
+   _____ ____                        _
+  |___ /|  _ \ ___ _   _  ___   __ _(_)
+    |_ \| | | / __| | | |/ _ \ / _` | |
+   ___) | |_| \__ \ |_| | (_) | (_| | |
+  |____/|____/|___/\__, |\___/ \__, |_|
+                   |___/       |___/
+
   各GND--Nomaly High,Vcc--LOW
   標準値3.3/2から20%の範囲外になった時に駒があると判定。SoftWere側で駒の種類を指定。
   100msおきに1マスごとのデータを送信,Unity側は逐次同期
 
-  シリアル通信　　　USB経由
-  wifi経由で通信　　アクセスポイント化
+  シリアル通信     USB経由
+  wifi経由で通信   アクセスポイント化
 */
 
 /*
@@ -114,7 +121,7 @@ void setup() {
     MCP1.write1(x,HIGH);//VCCピン
     delay(10);
   }
-  for(x=0;x<8;x++)
+  for(x=0;x<9;x++)
   {
     MCP2.write1(x,LOW);//GNDピン
     delay(10);
@@ -238,11 +245,11 @@ void loop() {
           MCP1.write1(x+7,HIGH);
           if(koma[x][y]!=koma_buckup[x][y])
           {
-            Serial.printf("M,%d,%d,%d,%d\n",turn,x,y,koma[x][y]);//差分のみ送信 手数(合算),マス位置(x,y),データ
+            Serial.printf("M,%d,%d,%d,%d,%d\n",turn,x,y,koma[x][y],mdata);//差分のみ送信 手数(合算),マス位置(x,y),データ//アナログ値(デバック用)
           }
           else
           {
-            Serial.printf("M,%d,%d,変化なし\n",x,y);
+            Serial.printf("M,%d,%d,%d,変化なし\n",x,y,mdata);
           }
           step=2;
         }   
